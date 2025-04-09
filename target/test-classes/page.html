@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Конвертор на мерни единици за площ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .converter {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h2>Конвертор за площ</h2>
+    <input type="number" id="inputValue" placeholder="Въведи стойност">
+    <select id="fromUnit">
+      <option value="sqm">Квадратни метра</option>
+      <option value="sqkm">Квадратни километра</option>
+      <option value="sqft">Квадратни фута</option>
+      <option value="sqin">Квадратни инча</option>
+      <option value="acre">Акри</option>
+      <option value="hectare">Хектари</option>
+    </select>
+    <select id="toUnit">
+      <option value="sqm">Квадратни метра</option>
+      <option value="sqkm">Квадратни километра</option>
+      <option value="sqft">Квадратни фута</option>
+      <option value="sqin">Квадратни инча</option>
+      <option value="acre">Акри</option>
+      <option value="hectare">Хектари</option>
+    </select>
+    <button onclick="convertArea()">Преобразувай</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const conversionRates = {
+      sqm: 1,
+      sqkm: 1e6,
+      sqft: 0.092903,
+      sqin: 0.00064516,
+      acre: 4046.86,
+      hectare: 10000
+    };
+
+    function convertArea() {
+      const inputValue = parseFloat(document.getElementById("inputValue").value);
+      const fromUnit = document.getElementById("fromUnit").value;
+      const toUnit = document.getElementById("toUnit").value;
+      const resultElement = document.getElementById("result");
+
+      if (isNaN(inputValue)) {
+        resultElement.textContent = "Моля, въведете валидна стойност.";
+        return;
+      }
+
+      const valueInSqM = inputValue * conversionRates[fromUnit];
+      const convertedValue = valueInSqM / conversionRates[toUnit];
+      resultElement.textContent = `${inputValue} ${getUnitName(fromUnit)} = ${convertedValue.toFixed(4)} ${getUnitName(toUnit)}`;
+    }
+
+    function getUnitName(unit) {
+      const names = {
+        sqm: "кв. м",
+        sqkm: "кв. км",
+        sqft: "кв. фута",
+        sqin: "кв. инча",
+        acre: "акра",
+        hectare: "хектара"
+      };
+      return names[unit];
+    }
+  </script>
+</body>
+</html>
